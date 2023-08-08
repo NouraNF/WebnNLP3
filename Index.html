@@ -1,0 +1,90 @@
+<!doctype html>
+	<head>
+		<style>
+			/* CSS comes here */
+			body{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    background-color: rgb(233, 229, 217); 
+   }
+   button {
+    font-size: 18px;
+    padding: 15px 32px;
+    margin: 4px 2px;
+    border-radius: 5px;
+    border: none;
+    background-color:rgba(209, 174, 57, 0.699);
+    color: rgb(126, 126, 126);
+    cursor: pointer;
+    font-family:fantasy;
+    font-style: italic;
+    opacity: 0.7;
+    text-decoration: wavy;
+   
+  }
+			#output {
+			    background-color:#F9F9F9;
+			    padding:10px;
+			    width: 100%;
+			    margin-top:20px;
+			    line-height:30px;
+			}
+			.hide {
+			    display:none;
+			}
+			.show {
+			    display:block;
+			}
+            /* font-family: fantasy;
+     font-style: initial; 
+     color: rgb(107, 6, 6);
+    padding: 20px;
+    text-align: center;
+    font-size:xx-large;*/
+            
+		</style>
+		<title>JavaScript Speech to Text</title>
+	</head>
+	<body>
+		<h2 style=" font-family: fantasy;  font-style: initial;  color: rgb(107, 6, 6);  padding: 20px; text-align: center;  padding: 20px;text-align: center;font-size:xx-large;font-size:xx-large;">JavaScript Speech to Text</h2>
+        <p style=" font-family: 'Gill Sans';font-display:unset; color:rgba(104, 72, 4, 0.801); font-size: large">Click on the below button and speak something...</p>
+        <p><button type="button" onclick="runSpeechRecognition()">Speech to Text</button> &nbsp; <span id="action"></span></p>
+        <div id="output" class="hide"></div>
+		<script>
+			/* JS comes here */
+		    function runSpeechRecognition() {
+		        // get output div reference
+		        var output = document.getElementById("output");
+		        // get action element reference
+		        var action = document.getElementById("action");
+                // new speech recognition object
+                var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+                var recognition = new SpeechRecognition();
+            
+                // This runs when the speech recognition service starts
+                recognition.onstart = function() {
+                    action.innerHTML = "<small>listening, please speak...</small>";
+                };
+                
+                recognition.onspeechend = function() {
+                    action.innerHTML = "<small>stopped listening, hope you are done...</small>";
+                    recognition.stop();
+                }
+              
+                // This runs when the speech recognition service returns result
+                recognition.onresult = function(event) {
+                    var transcript = event.results[0][0].transcript;
+                    var confidence = event.results[0][0].confidence;
+                    output.innerHTML = "<b>Text:</b> " + transcript + "<br/> <b>Confidence:</b> " + confidence*100+"%";
+                    output.classList.remove("hide");
+                };
+              
+                 // start recognition
+                 recognition.start();
+	        }
+		</script>
+	</body>
+</html> 
